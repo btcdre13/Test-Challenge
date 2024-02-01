@@ -9,7 +9,7 @@ pragma solidity 0.8.20;
  * @title A contract to facilitate the transfer of funds from buyer to seller after successful delivery of the physical product
  * @author Philipp Eder
  * @notice this contract can be reused by anyone at any time
- * @dev no liability assumed for the use of this contract
+ * @notice no liability assumed for the use of this contract
  */
 
 contract TestChallenge {
@@ -27,14 +27,14 @@ contract TestChallenge {
     }
 
     State public currentState;
-    /// @notice constant stands for the native asset of a blockchain and differentiates between ETH and ERC20 in this contract
+    /// @notice 0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE stands for the native asset of a blockchain and differentiates between ETH and ERC20 in this contract
     /// @dev serves the purpose of allowing for a zero check against it
     address public constant ETH_CONSTANT = 0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE; 
     address public immutable seller;
     address public immutable buyer;
     address public immutable arbitrator;
     IERC20 public immutable token;
-    uint256 public price;
+    uint256 public immutable price;
 
     event Deposit(address from, uint256 amount);
     event Withdraw(address to, uint256 value);
@@ -73,7 +73,7 @@ contract TestChallenge {
         _;
     }
 
-/// @dev No 0 check for arbitror to keep it customizable, in the case the parties agree to not have any arbitror
+/// @dev No 0 check for arbitrator to keep it customizable, in the case the parties agree to not instate any arbitrator
     constructor(
         address _seller,
         address _buyer,
@@ -134,8 +134,8 @@ contract TestChallenge {
         emit StateChanged(currentState);
     }
 
-      /// @notice function allows either party to claim the funds, depending on the State
-      /// @dev this function can be called by either parties even if the state does not correspond to them being eligible for claiming
+      /// @dev function allows either party to claim the funds, depending on the State
+      /// @notice this function can be called by either parties even if the state does not correspond to them being eligible for claiming
      ///      however the only outcome for a malicious party would be that they pay the gas fee for the other party, therefore not giving any incentive
     ///       to do so, as the recipient of the funds will be address claimer, which is determined by the contract's state
     function claimFunds() external onlyBothParties {
@@ -165,7 +165,7 @@ contract TestChallenge {
         emit StateChanged(currentState);
     }
 
-      /// @notice throws if current State is not Awaiting_Payment, if token is not set to ETH constant or msg.value != price
+      /// @dev throws if current State is not Awaiting_Payment, if token is not set to ETH constant or msg.value != price
     function depositETH() public payable {
         if(currentState != State.AWAITING_PAYMENT)
             revert IncorrectPhase();
@@ -175,4 +175,5 @@ contract TestChallenge {
         emit Deposit(msg.sender, msg.value);
         emit StateChanged(currentState);
     }
+
 }

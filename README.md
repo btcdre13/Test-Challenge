@@ -1,12 +1,19 @@
 ### testChallenge
 
+# Prerequisites
+Node.js version >= 18.18.0
+
 # Environment configuration
 npm install
 
 # Deployment
-in order to deploy this contract please create a .env file and provide the necessary datapoints, make sure to import dotenv in the hardhat.config file 
+in order to deploy this contract please create a .env file and provide the necessary datapoints 
 
 run the following command
+
+npx hardhat run scripts/deploy.js --network goerli
+
+to deploy on any other blockchains simply change the name of the network in the hardhat.config file and paste the rpc url in the env file then run
 
 npx hardhat run scripts/deploy.js --network <desired network>
 

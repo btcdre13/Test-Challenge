@@ -1,22 +1,23 @@
+/* deployment of the testChallenge contract using ETH as payment, for ERC20 tokens just
+  substitute the last parameter with the tokenaddress of your choice */
 
-const hre = require("hardhat");
-
-async function main() {
+  async function main() {
   
-  const TestChallenge = await hre.ethers.getContractFactory("TestChallenge");
-  const testChallenge = await TestChallenge.deploy(
-   
-
-    // insert params
-
-  );
-    await testChallenge.deployed();
-
-  console.log(`testChallenge Contract deployed at address: ${testChallenge.address}`);
-}
-
-
-main().catch((error) => {
-  console.error(error);
-  process.exitCode = 1;
-});
+    const TestChallenge = await ethers.getContractFactory("TestChallenge");
+    const testChallenge = await TestChallenge.deploy("0x330e49d664dB0Bf478B843Dd1da9ad6f07867E3f",
+                                                    "0x330e49d664dB0Bf478B843Dd1da9ad6f07867E3f",
+                                                    "0x330e49d664dB0Bf478B843Dd1da9ad6f07867E3f",
+                                                    10,
+                                                    "0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE"
+    );
+      
+  
+    console.log(`testChallenge Contract deployed at address: ${testChallenge.target}`);
+  }
+  
+  
+  main().catch((error) => {
+    console.error(error);
+    process.exitCode = 1;
+  });
+  
